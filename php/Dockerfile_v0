@@ -1,0 +1,58 @@
+FROM centos
+
+LABEL maintainer="gwf <943242261@qq.com>"
+LABEL description="基于 centos 的 php 镜像"
+LABEL version="7.2.18"
+
+RUN yum -y install wget
+RUN yum -y install gcc-c++
+RUN yum -y install make
+RUN yum -y install file
+RUN yum -y install bison
+
+RUN yum -y install libxml2-devel
+RUN yum -y install openssl-devel
+RUN yum -y install bzip2-devel
+RUN yum -y install curl-devel
+RUN yum -y install libpng-devel
+
+WORKDIR /usr/local/src
+
+RUN wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.16.tar.gz
+RUN tar -xzvf libiconv-1.16.tar.gz
+WORKDIR libiconv-1.16
+RUN ./configure --prefix=/usr/local/libiconv
+RUN make
+RUN make install
+
+WORKDIR /usr/local/src
+
+ENV PHP_VERSION 7.2.18
+ENV PHP_INI_DIR /etc/php
+
+# RUN wget https://www.php.net/distributions/php-$PHP_VERSION.tar.bz2
+ADD php-$PHP_VERSION.tar.bz2 /usr/local/src/
+WORKDIR php-$PHP_VERSION
+RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir=$PHP_INI_DIR/conf.d --enable-fpm --enable-bcmath --enable-mbstring --enable-soap --with-openssl --with-zlib --with-bz2 --with-curl --with-gd --with-gettext --with-iconv=/usr/local/libiconv --with-mysqli --without-pear --disable-fileinfo
+RUN make
+RUN make install
+
+RUN mkdir -p $PHP_INI_DIR/conf.d
+RUN cp php.ini-* $PHP_INI_DIR/
+WORKDIR $PHP_INI_DIR
+RUN cp php.ini-production php.ini
+
+WORKDIR /usr/local/etc
+RUN sed 's!=NONE/!=!g' php-fpm.conf.default | tee php-fpm.conf
+RUN cp php-fpm.d/www.conf.default php-fpm.d/www.conf
+
+RUN echo -e '[global]\ndaemonize = no' | tee php-fpm.d/zz-docker.conf
+
+COPY docker-php-entrypoint /usr/local/bin/
+ENTRYPOINT ["docker-php-entrypoint"]
+
+STOPSIGNAL SIGQUIT
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
