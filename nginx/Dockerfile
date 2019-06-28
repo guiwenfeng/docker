@@ -1,4 +1,4 @@
-FROM centos
+FROM centos:7.4.1708
 
 LABEL maintainer="gwf <943242261@qq.com>"
 LABEL description="基于 centos 的 nginx 镜像"
