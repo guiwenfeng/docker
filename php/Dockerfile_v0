@@ -46,10 +46,11 @@ WORKDIR /usr/local/etc
 RUN sed 's!=NONE/!=!g' php-fpm.conf.default | tee php-fpm.conf
 RUN cp php-fpm.d/www.conf.default php-fpm.d/www.conf
 
-RUN echo -e '[global]\ndaemonize = no' | tee php-fpm.d/zz-docker.conf
+RUN echo -e '[global]\ndaemonize = no\n[www]\nlisten = 9000' | tee php-fpm.d/zz-docker.conf
 
 COPY docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["docker-php-entrypoint"]
+WORKDIR /var/www/html
 
 STOPSIGNAL SIGQUIT
 

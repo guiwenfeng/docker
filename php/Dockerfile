@@ -29,11 +29,12 @@ RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir
     && cd /usr/local/etc \
     && sed 's!=NONE/!=!g' php-fpm.conf.default | tee php-fpm.conf \
     && cp php-fpm.d/www.conf.default php-fpm.d/www.conf \
-    && echo -e '[global]\ndaemonize = no' | tee php-fpm.d/zz-docker.conf \
+    && echo -e '[global]\ndaemonize = no\n[www]\nlisten = 9000' | tee php-fpm.d/zz-docker.conf \
     && rm -rf /usr/local/src
 
 COPY docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["docker-php-entrypoint"]
+WORKDIR /var/www/html
 
 STOPSIGNAL SIGQUIT
 
