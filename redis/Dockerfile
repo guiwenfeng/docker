@@ -22,10 +22,10 @@ RUN wget http://download.redis.io/releases/redis-$REDIS_VERSION.tar.gz \
     && cp redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-sentinel redis-server /usr/local/bin/ \
     && rm -rf /usr/local/src
 
-WORKDIR /usr/local/bin
-
 COPY docker-redis-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-redis-entrypoint.sh"]
+
+WORKDIR /usr/local/bin
 
 EXPOSE 6379
 

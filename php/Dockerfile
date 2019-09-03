@@ -32,8 +32,9 @@ RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir
     && echo -e '[global]\ndaemonize = no\n[www]\nlisten = 9000' | tee php-fpm.d/zz-docker.conf \
     && rm -rf /usr/local/src
 
-COPY docker-php-entrypoint /usr/local/bin/
-ENTRYPOINT ["docker-php-entrypoint"]
+COPY docker-php-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-php-entrypoint.sh"]
+
 WORKDIR /var/www/html
 
 STOPSIGNAL SIGQUIT
