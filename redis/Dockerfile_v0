@@ -1,0 +1,30 @@
+FROM centos:7.4.1708
+
+LABEL maintainer="gwf <943242261@qq.com>"
+LABEL description="基于 centos 的 redis 镜像"
+LABEL version="4.0.14"
+
+RUN yum -y install wget
+RUN yum -y install gcc-c++
+RUN yum -y install make
+
+WORKDIR /usr/local/src
+
+ENV REDIS_VERSION 4.0.14
+RUN wget http://download.redis.io/releases/redis-$REDIS_VERSION.tar.gz
+RUN tar -xzvf redis-$REDIS_VERSION.tar.gz
+
+WORKDIR redis-$REDIS_VERSION
+
+RUN make
+
+RUN mkdir /etc/redis
+RUN cp redis.conf sentinel.conf /etc/redis/
+
+WORKDIR src
+
+RUN cp redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-sentinel redis-server /usr/local/bin/
+
+EXPOSE 6379
+
+CMD ["redis-server", "/etc/redis/redis.conf"]
