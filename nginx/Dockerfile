@@ -15,6 +15,7 @@ ENV NGINX_EXTRA_CONFIGURE_ARGS --sbin-path=/usr/sbin/nginx --conf-path=/etc/ngin
 RUN wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
     && tar -xzvf nginx-$NGINX_VERSION.tar.gz \
     && cd nginx-$NGINX_VERSION \
+    && sed -i 's/Server:.*CRLF/Server: guiwenfeng.com" CRLF/g' src/http/ngx_http_header_filter_module.c \
     && ./configure $NGINX_EXTRA_CONFIGURE_ARGS --with-http_ssl_module \
     && make && make install \
     && rm -rf /usr/local/src \

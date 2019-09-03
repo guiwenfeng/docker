@@ -23,6 +23,7 @@ RUN cd luajit2-2.1-20190626 \
     && wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
     && tar -xzvf nginx-$NGINX_VERSION.tar.gz \
     && cd nginx-$NGINX_VERSION \
+    && sed -i 's/Server:.*CRLF/Server: guiwenfeng.com" CRLF/g' src/http/ngx_http_header_filter_module.c \
     && ./configure $NGINX_EXTRA_CONFIGURE_ARGS --with-http_ssl_module $NGINX_LUA_CONFIGURE_ARGS \
     && make && make install \
     && rm -rf /usr/local/src \
