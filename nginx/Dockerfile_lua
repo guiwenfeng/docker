@@ -29,6 +29,8 @@ RUN cd luajit2-2.1-20190626 \
     && rm -rf /usr/local/src \
     && useradd nginx -s /sbin/nologin -M
 
+WORKDIR /var/www
+
 EXPOSE 80
 
 STOPSIGNAL SIGTERM

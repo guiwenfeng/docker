@@ -21,6 +21,8 @@ RUN wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
     && rm -rf /usr/local/src \
     && useradd nginx -s /sbin/nologin -M
 
+WORKDIR /var/www
+
 EXPOSE 80
 
 STOPSIGNAL SIGTERM
