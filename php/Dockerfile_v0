@@ -50,7 +50,7 @@ RUN echo -e '[global]\ndaemonize = no\n[www]\nlisten = 9000' | tee php-fpm.d/zz-
 
 COPY docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["docker-php-entrypoint"]
-WORKDIR /var/www/html
+WORKDIR /var/www
 
 STOPSIGNAL SIGQUIT
 

@@ -35,7 +35,7 @@ RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir
 COPY docker-php-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-php-entrypoint.sh"]
 
-WORKDIR /var/www/html
+WORKDIR /var/www
 
 STOPSIGNAL SIGQUIT
 
