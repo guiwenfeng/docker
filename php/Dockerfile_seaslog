@@ -21,7 +21,7 @@ ENV PHP_INI_DIR /etc/php
 ADD php-$PHP_VERSION.tar.bz2 /usr/local/src/
 ADD SeasLog-2.0.2.tgz /usr/local/src/
 WORKDIR php-$PHP_VERSION
-RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir=$PHP_INI_DIR/conf.d --enable-fpm --enable-bcmath --enable-mbstring --enable-soap --with-openssl --with-zlib --with-bz2 --with-curl --with-gd --with-gettext --with-iconv=/usr/local/libiconv --with-mysqli --without-pear --disable-fileinfo \
+RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir=$PHP_INI_DIR/conf.d --enable-fpm --enable-bcmath --enable-mbstring --enable-soap --with-openssl --with-zlib --with-bz2 --with-curl --with-gd --with-gettext --with-iconv=/usr/local/libiconv --with-mysqli --with-pdo-mysql --without-pear --disable-fileinfo \
     && make && make install \
     && mkdir -p $PHP_INI_DIR/conf.d \
     && cp php.ini-* $PHP_INI_DIR/ \

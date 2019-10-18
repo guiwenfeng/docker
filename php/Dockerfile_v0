@@ -33,7 +33,7 @@ ENV PHP_INI_DIR /etc/php
 # RUN wget https://www.php.net/distributions/php-$PHP_VERSION.tar.bz2
 ADD php-$PHP_VERSION.tar.bz2 /usr/local/src/
 WORKDIR php-$PHP_VERSION
-RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir=$PHP_INI_DIR/conf.d --enable-fpm --enable-bcmath --enable-mbstring --enable-soap --with-openssl --with-zlib --with-bz2 --with-curl --with-gd --with-gettext --with-iconv=/usr/local/libiconv --with-mysqli --without-pear --disable-fileinfo
+RUN ./configure --with-config-file-path=$PHP_INI_DIR --with-config-file-scan-dir=$PHP_INI_DIR/conf.d --enable-fpm --enable-bcmath --enable-mbstring --enable-soap --with-openssl --with-zlib --with-bz2 --with-curl --with-gd --with-gettext --with-iconv=/usr/local/libiconv --with-mysqli --with-pdo-mysql --without-pear --disable-fileinfo
 RUN make
 RUN make install
 
