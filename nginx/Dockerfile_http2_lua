@@ -20,6 +20,13 @@ RUN cd luajit2-2.1-20190626 \
     && echo -e "export LUAJIT_LIB=/usr/local/luajit/lib\nexport LUAJIT_INC=/usr/local/luajit/include/luajit-2.1" >> /etc/profile \
     && source /etc/profile \
     && cd /usr/local/src \
+    && cd lua-cjson-2.1.0 \
+    && sed -ri 's/^PREFIX =(.*)\/usr\/local$/PREFIX =\1\/usr\/local\/luajit/g' Makefile \
+    && sed -ri 's/^LUA_INCLUDE_DIR =(.*)$/LUA_INCLUDE_DIR =\1\/luajit-2.1/g' Makefile \
+    && sed -i 's/static void luaL_setfuncs/void luaL_setfuncs/g' lua_cjson.c \
+    && make \
+    && cp cjson.so /usr/local/luajit/lib/lua/5.1/ \
+    && cd /usr/local/src \
     && wget http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz \
     && tar -xzvf nginx-$NGINX_VERSION.tar.gz \
     && cd nginx-$NGINX_VERSION \
