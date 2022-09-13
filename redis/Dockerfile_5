@@ -1,0 +1,31 @@
+FROM centos:7.6.1810
+
+LABEL maintainer="gwf <943242261@qq.com>"
+LABEL description="基于 centos 的 redis 镜像"
+LABEL version="5.0.8"
+
+RUN yum -y install wget gcc-c++ make \
+    && yum clean all
+
+WORKDIR /usr/local/src
+
+ENV REDIS_VERSION 5.0.8
+
+ADD redis-$REDIS_VERSION.tar.gz /usr/local/src/
+WORKDIR redis-$REDIS_VERSION
+RUN make \
+    && mkdir /etc/redis \
+    && cp redis.conf sentinel.conf /etc/redis/ \
+    && sed -i 's/logfile.*/logfile "\/var\/log\/redis.log"/g' /etc/redis/redis.conf \
+    && cd src \
+    && cp redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-sentinel redis-server /usr/local/bin/ \
+    && rm -rf /usr/local/src
+
+COPY docker-redis-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-redis-entrypoint.sh"]
+
+WORKDIR /usr/local/bin
+
+EXPOSE 6379
+
+CMD ["redis-server", "/etc/redis/redis.conf"]
